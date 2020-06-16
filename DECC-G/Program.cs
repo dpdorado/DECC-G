@@ -9,6 +9,7 @@ using OptimizacionBinaria.Metaheuristicas.EstadoSimple.HC;
 using OptimizacionBinaria.Metaheuristicas.EstadoSimple.TS;
 using OptimizacionBinaria.Metaheuristicas.Poblacionales.Geneticos;
 using OptimizacionBinaria.Metaheuristicas.Poblacionales.PSO;
+using OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G;
 
 namespace OptimizacionBinaria
 {
@@ -53,7 +54,9 @@ namespace OptimizacionBinaria
                 //Algoritmos para analizar
                 new RandomSearch() {MaxEFOs = maxEFOS},
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
-                new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10}
+                new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
+                new DE(){MaxEFOs = maxEFOS}
+
             };
 
             const int maxRep = 30;
