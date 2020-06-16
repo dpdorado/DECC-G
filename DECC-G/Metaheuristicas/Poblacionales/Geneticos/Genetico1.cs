@@ -22,9 +22,10 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.Geneticos
                 s.RandomInitialization(myRandom);
                 Population.Add(s);
             }
+            
 
             for (var g = 1; g < MaxGenerations; g++)
-            {
+            {               
                 var offsprints = new List<Solution>();
                 for (var p = 0; p < PopulationSize / 2; p++)
                 {
@@ -46,14 +47,14 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.Geneticos
                     //La mochila es factible? toca reparala?
                     h1.Repare(myRandom);
                     h1.Complete(myRandom, new List<int>());
-                    h1.Evaluate();
+                    h1.Evaluate();                    
 
                     h2.Repare(myRandom); 
                     h2.Complete(myRandom, new List<int>());
                     h2.Evaluate();
 
                     offsprints.Add(h1);
-                    offsprints.Add(h2);
+                    offsprints.Add(h2);                                  
                 }
 
                 //remplazo
@@ -66,8 +67,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.Geneticos
             }
 
             BestSolution = Population[0];
-        }
-
+        }        
 
         public int TorneoBinario(List<Solution> population, Random aleatorio)
         {

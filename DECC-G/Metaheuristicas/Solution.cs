@@ -195,6 +195,37 @@ namespace OptimizacionBinaria.Metaheuristicas
             }
         }
 
+        //Reparación del DECC_I
+        public void Repare(Random myRandom, int s, int group)
+        {            
+            var index_s = s * group - 1;
+            var index_i = index_s - s;
+            var count = 0;
+            //D --> Total items
+            if (Weight <= MyProblem.Capacity) return;
+
+            var inKnapsack = new List<int>();
+            for (var i = index_i; i <= index_s; i++)
+                if (Objects[i] == 1)
+                    inKnapsack.Add(i);
+
+
+            while (Weight > MyProblem.Capacity && count < s)
+            {
+                var p = myRandom.Next(index_i, index_s);
+                var id = inKnapsack[p];
+                Objects[id] = 0;
+                Weight -= MyProblem.Weight(id);
+                inKnapsack.RemoveAt(p);
+                count++;
+            }
+
+            if (count >= s)
+            {
+                Repare(myRandom);
+            }
+        }
+
         public void Improvisation(List<Solution> hm, double hmcr, double par, Random myRandom)
         {
             Weight = 0;

@@ -36,15 +36,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             //Population = pop, wpop ->otra lista de soluciones
 
             // Inicialización de la población P(t=0)
-            var Population = inicializar_poblacion(theProblem,myRandom);//->CMBIAR POP(VALOR1,VALOR2)
-            var wPopulation = new List<Double>();
+            var Population = inicializar_poblacion(theProblem,myRandom);
             
-            definir_peso_poblacion();//Falta            
+            var wPopulation = new List<PesosSolucion>();
+                        
+            definir_peso_poblacion(Population,wPopulation);//Falta            
             
             ///var index = randperm(D);//index(0,D);
 
             for (var i = 1; i < this.cycles; i++)
             {
+
                 for (var j = 1; j < this.D/this.s; j++)
                 {
                     var l = (j - 1) * s + 1;
@@ -54,13 +56,13 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
                     var subpob = obtener_subpoblacion(0, ind);
 
-                    subpob = SaNSDE(BestSolution,subpob,this.FEs);//Falta//FEs->número de evaluaciones
+                    //subpob = DE(BestSolution,subpob,this.FEs);//Falta//FEs->número de evaluaciones
 
-                    definir_peso_poblacion();//Arreglar -> :,j
+                    //definir_peso_poblacion();//Arreglar -> :,j
 
                     add_poblacion(0,ind,subpob);//remplazar la subpoblación mejorada
 
-                    evaluar_poblacion();//Falta
+                    evaluar_poblacion(Population, 0,ind);
                 }    
 
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
@@ -70,12 +72,22 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 Solution rand_s =Population[this.index(1,this.PopulationSize-1)];
                 Solution worst_s = Population[0];
                                 
-                DE(best_s,wPopulation,wFEs);//Falta
-                DE(rand_s,wPopulation,wFEs);//Falta
-                DE(worst_s,wPopulation,wFEs);//Falta
+                //DE(best_s,wPopulation,wFEs);//Falta
+                //DE(rand_s,wPopulation,wFEs);//Falta
+                //DE(worst_s,wPopulation,wFEs);//Falta
 
-                evaluar_poblacion();
-            }                        
+                evaluar_poblacion(Population,0,this.PopulationSize);
+            }
+            BestSolution = Population[0];                        
+        }
+
+        //Reparar soluciones
+        public void reparar_soluciones(Random myRandom, List<Solution> Population, int s, int group)
+        {
+            foreach(var solution in Population)
+            {
+                solution.Repare(myRandom,s,group);
+            }            
         }
 
         //Genera un indice netre el limite inferior(li) y el limite superior(ls)
@@ -119,14 +131,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         }
 
 
-        //Evaluar la población -> best, best_val
-        public void evaluar_poblacion()
+        //Evalua la población entre dos indices dados
+        public void evaluar_poblacion(List<Solution> Population, int index_s_i,int index_s_f)
         {
-            //TODO:
+            for (var i = index_s_i; i <= index_s_f; i++)
+            {
+                Population[i].Evaluate();
+            }
         }
 
         //Definir peso de la población: linea 2
-        public void definir_peso_poblacion()
+        public void definir_peso_poblacion(List<Solution> Population, List<PesosSolucion> wPopulation)
         {
             //TODO:
         }
@@ -142,6 +157,23 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 Population.Add(s);
             }
             return Population;
+        }
+    }
+
+
+    //Clase que guarda los pesos de cada solución dividida en grupos
+    public class PesosSolucion
+    {
+        private List<Double> pesos = null;
+        
+        public PesosSolucion()
+        {
+            this.pesos = new List<Double>();
+        }
+
+        public List<Double> getPesos()
+        {
+            return this.pesos;
         }
     }
 }
