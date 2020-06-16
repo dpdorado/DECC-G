@@ -86,15 +86,12 @@ namespace OptimizacionBinaria.Metaheuristicas
                 if (probability < tweakProbabilities[neighboorhood])
                     Tweak2(myRandom, neighboorhood + 1);
         }
-
-        /// <summary>
+ 
         /// This tweak operator turn off a numberOff randomly selected objects
         /// then complete the solution (try to randomly include other objects
         /// while available weight exits) - do not complete with elements previously
         /// extracted
-        /// </summary>
-        /// <param name="myRandom"></param>
-        /// <param name="numberOff"></param>
+ 
         public void Tweak2(Random myRandom, int numberOff)
         {
             var selectedObjets = new List<KeyValuePair<int, double>>();

@@ -28,7 +28,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
         public override void Ejecutar(Knapsack theProblem, Random myRandom)
         { 
-             //var timeBegin = DateTime.Now;
+            //var timeBegin = DateTime.Now;
             EFOs = 0;
             
             //Agregar conodiciones de salida -> EFOs, y si se encuentra soucion
@@ -37,66 +37,66 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
             // Inicialización de la población P(t=0)
             var Population = inicializar_poblacion(theProblem,myRandom);//->CMBIAR POP(VALOR1,VALOR2)
-            var wPopulation = new List<Solution>();
-            definir_peso_poblacion();//Falta
-            evaluar_poblacion();//Falta
-            var index = randperm(D);
+            var wPopulation = new List<Double>();
+            
+            definir_peso_poblacion();//Falta            
+            
+            ///var index = randperm(D);//index(0,D);
+
             for (var i = 1; i < this.cycles; i++)
             {
                 for (var j = 1; j < this.D/this.s; j++)
                 {
                     var l = (j - 1) * s + 1;
                     var u = j * s;
-                    var subpob = obtener_subpoblacion(l,u);//falta->index(l,u)
-                    subpob = SaNSDE(BestSolution,subpob,this.FEs);//Falta
+
+                    var ind = index(l,u);
+
+                    var subpob = obtener_subpoblacion(0, ind);
+
+                    subpob = SaNSDE(BestSolution,subpob,this.FEs);//Falta//FEs->número de evaluaciones
+
                     definir_peso_poblacion();//Arreglar -> :,j
-                    add_poblacion(l,u,subpob);//Agrega la subpoblación o una parte de ella a la Población general
+
+                    add_poblacion(0,ind,subpob);//remplazar la subpoblación mejorada
+
                     evaluar_poblacion();//Falta
                 }    
-                findbest(Population);//Falta
-                findrand(Population);//Falta
-                findworst(Population);//Falta
-                DE(BestSolution,wPopulation,wFEs);//Falta
-                //DE(randSolution,wPopulation,wFEs);//Falta
-                //DE(worstSolution,wPopulation,wFEs);//Falta
+
+                Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
+
+                //Se optiene la peor solución, la mejor y una solución aleatoria            
+                Solution best_s = Population[this.PopulationSize];
+                Solution rand_s =Population[this.index(1,this.PopulationSize-1)];
+                Solution worst_s = Population[0];
+                                
+                DE(best_s,wPopulation,wFEs);//Falta
+                DE(rand_s,wPopulation,wFEs);//Falta
+                DE(worst_s,wPopulation,wFEs);//Falta
+
                 evaluar_poblacion();
             }                        
         }
+
+        //Genera un indice netre el limite inferior(li) y el limite superior(ls)
+        public int index(int li,int ls)
+        {
+            var rand = new Random();            
+            return rand.Next(li,ls);
+        }
         //Algoritmo de evoluación diferencial
-        public void DE(Solution BestSolution, List<Solution> wPopulation, int wFEs)
+        public void DE(Solution BestSolution, List<Double> wPopulation, int wFEs)
         {            
             //TODO:   
 
         }
-
-        //Encuentra la peor solucón  en la población->worst,worst_indexs        
-        public void findworst(List<Solution> Population)
-        {
-            //TODO:
-        }
-        //Encuentra una solucón aleatoria en la población->rand,rand_indexs        
-        public void findrand(List<Solution> Population)
-        {
-            //TODO:
-        }
-
-        //Encuentra la mejor solución en la población->best,bets_indexs
-        public void findbest(List<Solution> Population)
-        {
-            //TODO:
-        }
+       
         //Agrega la subpoblación o una parte de ella a la Población general
         public void add_poblacion(int l, int u, List<Solution>subpob)
         {
             //TODO:
             return;
-        }
-        //???????
-        public int index(int l, int u)
-        {
-            //TODO; 
-            return 0;
-        }
+        }        
         //SaNSDE....
         public List<Solution> SaNSDE(Solution BestSolution,List<Solution> subpob,int FEs)
         {
