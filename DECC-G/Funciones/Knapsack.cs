@@ -5,7 +5,7 @@ namespace OptimizacionBinaria.Funciones
 {
     public class Knapsack
     {
-        private const string RootDirectory = "/home/dpdaniel/Pruebas/Parcial 2 - Metaheuristicas/DECC-G/DECC-G/knapsack-files/";
+        private const string RootDirectory = "D:\\metaheuristicas\\DECC-G\\DECC-G\\knapsack-files\\";
         public int TotalItems;
         public double Capacity;
         public double OptimalKnown;
