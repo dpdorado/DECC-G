@@ -150,7 +150,21 @@ namespace OptimizacionBinaria.Metaheuristicas
             }
         }
 
-        
+        public void CruceIntercalado(Solution p1, Solution p2, int index_i, int index_s)
+        {
+            Weight = 0;
+            for (var i = index_i; i < index_s; i++)
+            {
+                if (i % 2 == 0) Objects[i] = p1.Objects[i];
+                else Objects[i] = p2.Objects[i];                
+            }
+
+            for (var i = 0;i < MyProblem.TotalItems;i++)
+            {
+                if (Objects[i] == 1)
+                    Weight += MyProblem.Weight(i);
+            }
+        }
         public void CruceIntercalado(Solution p1, Solution p2)
         {
             Weight = 0;
@@ -161,6 +175,32 @@ namespace OptimizacionBinaria.Metaheuristicas
                 if (Objects[i] == 1)
                     Weight += MyProblem.Weight(i);
             }
+        }
+        
+        public void DEmutation(Random myRandom, Solution b, Solution c, Double F,int index_i,int index_s)
+        {
+            Weight = 0;
+            for (var i = index_i; i <= index_s; i++)
+            {
+                var f = Objects[i] +  F*(b.Objects[i]-c.Objects[i]);
+                var sig_x = 1/(1 + Math.Exp(f));
+                var rand = myRandom.NextDouble();
+
+                if (sig_x >= rand)
+                {
+                    Objects[i] = 1;
+                }else
+                {
+                    Objects[i] = 0;
+                }                           
+            }
+
+            for (var i = 0;i < MyProblem.TotalItems;i++)
+            {
+                if (Objects[i] == 1)
+                    Weight += MyProblem.Weight(i);
+            }
+            
         }
 
         public void DEmutation(Random myRandom, Solution b, Solution c, Double F)
