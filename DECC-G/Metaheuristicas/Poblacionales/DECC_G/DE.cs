@@ -14,7 +14,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             EFOs = 0;                  
             
             var Population = new List<Solution>();
-            var Q = new List<Solution>();
+            var Q =new List<Solution>();
             
 
             Population =  inicializar_poblacion(theProblem,myRandom);
@@ -23,21 +23,25 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                         
             while (EFOs <= MaxEFOs && Population[0].IsOptimalKnown()){
                 
-                for(var i = 0; i <= PopulationSize; i++)
+                for(var i = 0; i < PopulationSize; i++)
                 {
-                    if(Q != null && Q[i].Fitness > Population[i].Fitness)
+                    if(Q.Count != 0)
                     {
-                        Population[i] = new Solution(Q[i]);
+                        if (Q[i].Fitness > Population[i].Fitness)
+                        {
+                            Population[i] = new Solution(Q[i]);
+                        }
+                        if (Best == null || Q[i].Fitness > Best.Fitness)
+                        {
+                            Best = new Solution(Population[i]);
+                        }
                     }
-                    if(Best == null || Q[i].Fitness > Best.Fitness)
-                    {
-                        Best = new Solution(Population[i]);
-                    }
+                                       
                 }
 
                 Q = Population;
                 
-                for (var j = 0; j <= PopulationSize; j++)
+                for (var j = 0; j < PopulationSize; j++)
                 {
                     List<Solution> solucionesAleatorias = obtenerAleatorios(Population, j, myRandom);
                     var a = solucionesAleatorias[0];
@@ -90,21 +94,24 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 
                 for(var i = index_i; i <= index_s; i++)
                 {
-                    if(Q != null && Q[i].Fitness > Population[i].Fitness)
+                    if(Q.Count != 0)
                     {
-                        Population[i] = new Solution(Q[i]);
-                    }
-                    if(Best == null || Q[i].Fitness > Best.Fitness)
-                    {
-                        Best = new Solution(Population[i]);
-                    }
+                        if (Q[i].Fitness > Population[i].Fitness)
+                        {
+                            Population[i] = new Solution(Q[i]);
+                        }
+                        if (Best == null || Q[i].Fitness > Best.Fitness)
+                        {
+                            Best = new Solution(Population[i]);
+                        }
+                    }                   
                 }
 
                 Q = Population;
                 
                 for (var j = index_i; j <= index_s; j++)
                 {
-                    List<Solution> solucionesAleatorias = obtenerAleatorios_index(Population, j, myRandom, index_i,index_s);
+                    List<Solution> solucionesAleatorias = obtenerAleatorios(Population, j, myRandom);
                     var a = solucionesAleatorias[0];
                     var b = solucionesAleatorias[1];
                     var c = solucionesAleatorias[2]; 
@@ -152,8 +159,10 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             return Population;
         }
         
+        /*
         private List<Solution> obtenerAleatorios_index(List<Solution> Population, int index_Qi, Random aleatorio,int index_i,int index_s)
         {
+            //List<Solution> varResultado = new List<Solution>();
             List<Solution> varResultado = null;
             do
             {                
@@ -175,15 +184,15 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             } while (varResultado != null);
 
             return varResultado;
-        }
+        }*/
         private List<Solution> obtenerAleatorios(List<Solution> Population, int index_Qi, Random aleatorio)
         {
             List<Solution> varResultado = null;
-            do
-            {                
-                var a = aleatorio.Next(0, PopulationSize);
-                var b = aleatorio.Next(0, PopulationSize);
-                var c = aleatorio.Next(0, PopulationSize);
+            
+            while (varResultado == null){                
+                var a = aleatorio.Next(0, PopulationSize-1);
+                var b = aleatorio.Next(0, PopulationSize-1);
+                var c = aleatorio.Next(0, PopulationSize-1);
 
                 if (a == b || b == c || c == a)
                 {
@@ -192,11 +201,12 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 if (a == index_Qi || b == index_Qi || c ==index_Qi)
                 {
                     continue;
-                }                                
+                }                              
+                varResultado = new List<Solution>();                  
                 varResultado.Add(new Solution(Population[a]));
                 varResultado.Add(new Solution(Population[b]));
                 varResultado.Add(new Solution(Population[c]));                
-            } while (varResultado != null);
+            }
 
             return varResultado;
         }
