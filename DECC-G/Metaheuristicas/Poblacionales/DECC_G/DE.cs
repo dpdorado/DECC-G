@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using OptimizacionBinaria.Funciones;
 
@@ -15,7 +16,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             var Population = new List<Solution>();
             var Q = new List<Solution>();
             
-
+                
             Population =  inicializar_poblacion(theProblem,myRandom);
             
             var Best = Population[0];//Entra como parametro
@@ -92,7 +93,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         
         private List<Solution> obtenerAleatorios(List<Solution> Population, int index_Qi, Random aleatorio)
         {
-            List<Solution> varResultado = null;
+            List<Solution> varResultado = new List<Solution>();
             do
             {                
                 var a = aleatorio.Next(0, PopulationSize);
