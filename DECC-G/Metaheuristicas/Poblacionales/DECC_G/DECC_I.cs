@@ -12,72 +12,79 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         public int PopulationSize = 100;
         //public int MaxGenerations = 1000;
 
-        //Atributos
+        public int cycles = 2;//cambiar valor por defecto
+        //Número predefinido de evaluaciones de estado físico (FE)
+
         //Número de diviciones del vector
         public int s = 2;//cambiar valor por defecto
         //Número de ciclos
-        public int cycles = 2;//cambiar valor por defecto
-        //Número predefinido de evaluaciones de estado físico (FE)
-        public int FEs = 2;//cambiar valor por defecto
-        //Peso del componente FEs
-        public int wFEs = 0;
-        //Dimensiones
-        public int D = 0;
-
         
+        public int FEs = 2;//cambiar valor por defecto
+        //Peso del componente FEs                  
 
         public override void Ejecutar(Knapsack theProblem, Random myRandom)
         { 
             //var timeBegin = DateTime.Now;
             EFOs = 0;
-            
-            //Agregar conodiciones de salida -> EFOs, y si se encuentra soucion
+            DE de = new DE(){MaxEFOs = FEs, k = 0.01};//variar
+            s = theProblem.TotalItems / 3;
 
-            //Population = pop, wpop ->otra lista de soluciones
-
-            // Inicialización de la población P(t=0)
+                
             var Population = inicializar_poblacion(theProblem,myRandom);
-            
-            var wPopulation = new List<PesosSolucion>();
-                        
-            definir_peso_poblacion(Population,wPopulation);//Falta            
-            
-            ///var index = randperm(D);//index(0,D);
-
+            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
+            var best_s = new Solution(Population[0]);
+          
+                                                                                 
             for (var i = 1; i < this.cycles; i++)
-            {
-
-                for (var j = 1; j < this.D/this.s; j++)
-                {
-                    var l = (j - 1) * s + 1;
-                    var u = j * s;
-
-                    var ind = index(l,u);
-
-                    var subpob = obtener_subpoblacion(0, ind);
-
-                    //subpob = DE(BestSolution,subpob,this.FEs);//Falta//FEs->número de evaluaciones
-
-                    //definir_peso_poblacion();//Arreglar -> :,j
-
-                    add_poblacion(0,ind,subpob);//remplazar la subpoblación mejorada
-
-                    evaluar_poblacion(Population, 0,ind);
+            {              
+                for (var j = 1; j < theProblem.TotalItems/this.s; j++)
+                {                    
+                    var l = ((j - 1) * s + 1) -1;//+1-1=0se puede eliminar
+                    var u = (j * s) - 1;              
+                                        
+                    de.Ejecutar(myRandom, best_s, Population, l,u);                                                                             
                 }    
-
+                
+                for (var j = 0; j <= PopulationSize; j++)
+                {
+                    Population[i].Evaluate();
+                }                
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
 
                 //Se optiene la peor solución, la mejor y una solución aleatoria            
-                Solution best_s = Population[this.PopulationSize];
-                Solution rand_s =Population[this.index(1,this.PopulationSize-1)];
-                Solution worst_s = Population[0];
-                                
-                //DE(best_s,wPopulation,wFEs);//Falta
-                //DE(rand_s,wPopulation,wFEs);//Falta
-                //DE(worst_s,wPopulation,wFEs);//Falta
+                best_s = Population[0];
+                var index_rand =index(1,PopulationSize-1);
+                Solution rand_s = Population[index_rand];
+                Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
+                Solution worst_s = Population[PopulationSize];
+                
+                List<Solution> new_population = new List<Solution>
+                {
+                    rand_s,
+                    rand_s1,
+                    worst_s
+                };
+                Console.WriteLine("5");
+                de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);
+                Population[PopulationSize] =de.BestSolution;
+                Console.WriteLine("6");
 
-                evaluar_poblacion(Population,0,this.PopulationSize);
+                /*de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
+                Population[0] = new Solution(de.BestSolution);
+                de.Ejecutar(myRandom, rand_s, Population, 0,theProblem.TotalItems-1);  
+                Population[index_rand] = new Solution(de.BestSolution);
+                de.Ejecutar(myRandom, worst_s, Population, 0,theProblem.TotalItems-1);  
+                Population[PopulationSize] = new Solution(de.BestSolution); 
+
+                for (var j = 0; j <= PopulationSize; j++)
+                {
+                    Population[i].Evaluate();
+                }
+
+                Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
+                best_s = Population[0];*/
             }
+            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
             BestSolution = Population[0];                        
         }
 
@@ -95,56 +102,8 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         {
             var rand = new Random();            
             return rand.Next(li,ls);
-        }
-        //Algoritmo de evoluación diferencial
-        public void DE(Solution BestSolution, List<Double> wPopulation, int wFEs)
-        {            
-            //TODO:   
-
-        }
-       
-        //Agrega la subpoblación o una parte de ella a la Población general
-        public void add_poblacion(int l, int u, List<Solution>subpob)
-        {
-            //TODO:
-            return;
-        }        
-        //SaNSDE....
-        public List<Solution> SaNSDE(Solution BestSolution,List<Solution> subpob,int FEs)
-        {
-            //TODO:
-            return null;
-        }
-
-        //Obtener subpoblación
-        public List<Solution> obtener_subpoblacion(int l,int u)
-        {
-            //TODO:
-            return null;//lista
-            
-        }
-        //Generar número aleatorio entre 1 y número de diviciones del vector (D)
-        public int randperm(int D)
-        {
-            var rand = new Random();            
-            return rand.Next(1,D);
-        }
-
-
-        //Evalua la población entre dos indices dados
-        public void evaluar_poblacion(List<Solution> Population, int index_s_i,int index_s_f)
-        {
-            for (var i = index_s_i; i <= index_s_f; i++)
-            {
-                Population[i].Evaluate();
-            }
-        }
-
-        //Definir peso de la población: linea 2
-        public void definir_peso_poblacion(List<Solution> Population, List<PesosSolucion> wPopulation)
-        {
-            //TODO:
-        }
+        }                            
+     
 
         //Inicializar la población
         public List<Solution> inicializar_poblacion(Knapsack theProblem,Random myRandom)

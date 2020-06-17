@@ -79,21 +79,26 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             BestSolution = Population[0];
         } 
 
-        public void Ejecutar(Random myRandom, Solution BestSolution, List<Solution> subpob, int FEs, int s,int group, int k)
+        public void Ejecutar(Random myRandom, Solution BestSolution, List<Solution> subpob, int index_i,int index_s)
         {
+            Console.WriteLine("DE--");
             EFOs = 0;                  
-            this.k=k;
+
             var Population = subpob;
-            var Q = new List<Solution>();
-            var index_s = s*group-1;
-            var index_i = index_s-s;
+            var Q = new List<Solution>();            
                        
             var Best = new Solution(BestSolution);
-                        
-            while (EFOs <= FEs ){
-                
+
+            var co =0;   
+            while (EFOs <= MaxEFOs ){
+                /*Console.WriteLine("while");
+                Console.WriteLine(co);
+                Console.WriteLine("EFOS :"+EFOs);
+                Console.WriteLine("MaxEFOS :"+MaxEFOs);
+                co++;*/
                 for(var i = index_i; i <= index_s; i++)
                 {
+                    //Console.WriteLine("FOr_1");
                     if(Q.Count != 0)
                     {
                         if (Q[i].Fitness > Population[i].Fitness)
@@ -111,6 +116,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 
                 for (var j = index_i; j <= index_s; j++)
                 {
+                    //Console.WriteLine("For_2");
                     List<Solution> solucionesAleatorias = obtenerAleatorios(Population, j, myRandom);
                     var a = solucionesAleatorias[0];
                     var b = solucionesAleatorias[1];
@@ -134,8 +140,9 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     a.CruceIntercalado(padre, madre, index_i,index_s);
 
                     Population[j] = a;
-                    Population[j].Repare(myRandom,s,group);
+                    Population[j].Repare(myRandom,index_i,index_s);
                     Population[j].Evaluate();
+                    //EFOs++;
 
                     if (EFOs >= MaxEFOs) break;                    
                 }                
@@ -190,9 +197,9 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             List<Solution> varResultado = null;
             
             while (varResultado == null){                
-                var a = aleatorio.Next(0, PopulationSize-1);
-                var b = aleatorio.Next(0, PopulationSize-1);
-                var c = aleatorio.Next(0, PopulationSize-1);
+                var a = aleatorio.Next(0, Population.Count-1);
+                var b = aleatorio.Next(0, Population.Count-1);
+                var c = aleatorio.Next(0, Population.Count-1);
 
                 if (a == b || b == c || c == a)
                 {

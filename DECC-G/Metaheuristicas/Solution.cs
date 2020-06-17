@@ -258,11 +258,10 @@ namespace OptimizacionBinaria.Metaheuristicas
         }
 
         //Reparación del DECC_I
-        public void Repare(Random myRandom, int s, int group)
-        {            
-            var index_s = s * group - 1;
-            var index_i = index_s - s;
+        public void Repare(Random myRandom, int index_i, int index_s)
+        {                       
             var count = 0;
+            var s = index_s - index_i;
             //D --> Total items
             if (Weight <= MyProblem.Capacity) return;
 
@@ -274,7 +273,7 @@ namespace OptimizacionBinaria.Metaheuristicas
 
             while (Weight > MyProblem.Capacity && count < s)
             {
-                var p = myRandom.Next(index_i, index_s);
+                var p = myRandom.Next(0, inKnapsack.Count);
                 var id = inKnapsack[p];
                 Objects[id] = 0;
                 Weight -= MyProblem.Weight(id);

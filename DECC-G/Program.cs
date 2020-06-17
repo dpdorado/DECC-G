@@ -55,7 +55,8 @@ namespace OptimizacionBinaria
                 new RandomSearch() {MaxEFOs = maxEFOS},
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
                 new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
-                new DE(){MaxEFOs = maxEFOS}
+                new DE(){MaxEFOs = maxEFOS},
+                new DECC_I(){MaxEFOs = maxEFOS, cycles = 2, FEs = 20, s = 4}
 
             };
 
@@ -67,7 +68,7 @@ namespace OptimizacionBinaria
             var parList = new List<double>(){0.25};//; { 0.2, 0.25, 0.3, 0.35, 0.4}; //5
 
 
-            Console.WriteLine("             Búsqueda Aleatoria        Algoritmo Genético        GBHS                    DECC_I");
+            Console.WriteLine("             Búsqueda Aleatoria        Algoritmo Genético        GBHS                      DE                    DECC_I");
             foreach (var Problem in myProblems)
             {
                 Console.Write("Problema " + count+ ":  ");                
