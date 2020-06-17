@@ -56,18 +56,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 var index_rand =index(1,PopulationSize-1);
                 Solution rand_s = Population[index_rand];
                 Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
-                Solution worst_s = Population[PopulationSize];
-                
+                Solution worst_s = Population[PopulationSize-1];
+                               
                 List<Solution> new_population = new List<Solution>
                 {
                     rand_s,
                     rand_s1,
                     worst_s
-                };
-                Console.WriteLine("5");
-                de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);
-                Population[PopulationSize] =de.BestSolution;
-                Console.WriteLine("6");
+                };                
+                de.Ejecutar(myRandom, best_s, new_population,0,new_population.Count);      
+                //____________________________________problema principal          
+                Population[PopulationSize-1] = de.BestSolution; 
 
                 /*de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
                 Population[0] = new Solution(de.BestSolution);
@@ -84,7 +83,8 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
                 best_s = Population[0];*/
             }
-            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
+            //Aqui el problema-----------------------------------------por ->
+            //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));//Error al ordenar
             BestSolution = Population[0];                        
         }
 
@@ -117,22 +117,5 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             }
             return Population;
         }
-    }
-
-
-    //Clase que guarda los pesos de cada solución dividida en grupos
-    public class PesosSolucion
-    {
-        private List<Double> pesos = null;
-        
-        public PesosSolucion()
-        {
-            this.pesos = new List<Double>();
-        }
-
-        public List<Double> getPesos()
-        {
-            return this.pesos;
-        }
-    }
+    }   
 }

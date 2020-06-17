@@ -66,7 +66,8 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
                     Population[j] = a;
                     Population[j].Repare(myRandom);
-                    Population[j].Evaluate();
+                    Population[j].Evaluate();                    
+
 
                     if (EFOs >= MaxEFOs) break;
                     if (Population[j].IsOptimalKnown()) break;
@@ -80,23 +81,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         } 
 
         public void Ejecutar(Random myRandom, Solution BestSolution, List<Solution> subpob, int index_i,int index_s)
-        {
-            Console.WriteLine("DE--");
+        {            
             EFOs = 0;                  
-
+            //Console.WriteLine("---");
             var Population = subpob;
             var Q = new List<Solution>();            
                        
             var Best = new Solution(BestSolution);
-
-            var co =0;   
-            while (EFOs <= MaxEFOs ){
-                /*Console.WriteLine("while");
-                Console.WriteLine(co);
-                Console.WriteLine("EFOS :"+EFOs);
-                Console.WriteLine("MaxEFOS :"+MaxEFOs);
-                co++;*/
-                for(var i = index_i; i <= index_s; i++)
+            //Console.WriteLine("Poblacion:"+subpob.Count);
+            //var co =0;   
+            while (EFOs <= MaxEFOs ){              
+                for(var i = 0; i < Population.Count; i++)
                 {
                     //Console.WriteLine("FOr_1");
                     if(Q.Count != 0)
@@ -113,17 +108,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 }
 
                 Q = Population;
-                
-                for (var j = index_i; j <= index_s; j++)
-                {
-                    //Console.WriteLine("For_2");
-                    List<Solution> solucionesAleatorias = obtenerAleatorios(Population, j, myRandom);
+               
+                for (var j = 0; j < Population.Count; j++)
+                {                    
+                    List<Solution> solucionesAleatorias = obtenerAleatorios(Population, j, myRandom);                    
+
                     var a = solucionesAleatorias[0];
                     var b = solucionesAleatorias[1];
                     var c = solucionesAleatorias[2]; 
 
-                    a.DEmutation(myRandom,b,c,k,index_i,index_s);                                        
-                    
+                    a.DEmutation(myRandom,b,c,k,index_i,index_s);                                                        
+
                     Solution padre = null;
                     Solution madre = null; 
 
@@ -142,7 +137,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     Population[j] = a;
                     Population[j].Repare(myRandom,index_i,index_s);
                     Population[j].Evaluate();
-                    //EFOs++;
+                    EFOs++;                    
 
                     if (EFOs >= MaxEFOs) break;                    
                 }                
@@ -151,7 +146,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             }
             
                 
-            BestSolution = Population[0];
+            BestSolution = new Solution(Population[0]);
         }
 
         public List<Solution> inicializar_poblacion(Knapsack theProblem,Random myRandom)
@@ -192,15 +187,24 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
             return varResultado;
         }*/
-        private List<Solution> obtenerAleatorios(List<Solution> Population, int index_Qi, Random aleatorio)
+        private List<Solution> obtenerAleatorios(List<Solution> Population, int index_Qi, Random ale)
         {
             List<Solution> varResultado = null;
-            
-            while (varResultado == null){                
-                var a = aleatorio.Next(0, Population.Count-1);
-                var b = aleatorio.Next(0, Population.Count-1);
-                var c = aleatorio.Next(0, Population.Count-1);
+            var count = 1;
 
+            while (varResultado == null){   
+                var seed = Environment.TickCount;
+                var aleatorio = new Random(seed);             
+                var a = aleatorio.Next(Population.Count);
+                var b = aleatorio.Next(Population.Count);
+                var c = aleatorio.Next(Population.Count);
+                
+                if (count>=5)
+                {
+                    varResultado = init_list_rand(Population,0,1,2);
+                }
+               
+                count ++;
                 if (a == b || b == c || c == a)
                 {
                     continue;
@@ -208,14 +212,20 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 if (a == index_Qi || b == index_Qi || c ==index_Qi)
                 {
                     continue;
-                }                              
-                varResultado = new List<Solution>();                  
-                varResultado.Add(new Solution(Population[a]));
-                varResultado.Add(new Solution(Population[b]));
-                varResultado.Add(new Solution(Population[c]));                
+                }  
+                varResultado = init_list_rand(Population,a,b,c);
+                               
             }
 
             return varResultado;
+        }
+        public List<Solution> init_list_rand(List<Solution> Population, int a,int b, int c)
+        {
+                var varResultado = new List<Solution>();                  
+                varResultado.Add(new Solution(Population[a]));
+                varResultado.Add(new Solution(Population[b]));
+                varResultado.Add(new Solution(Population[c]));
+                return varResultado;
         }
             
     }

@@ -15,8 +15,10 @@ namespace OptimizacionBinaria
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
+            Console.WriteLine("Hola");
             var myProblems = new List<Knapsack>
             {
                 new Knapsack("f1.txt"),
@@ -31,10 +33,10 @@ namespace OptimizacionBinaria
                 new Knapsack("f10.txt"),
                 new Knapsack("Knapsack1.txt"),
                 new Knapsack("Knapsack2.txt"),
-                new Knapsack("Knapsack3.txt")
-                //new Knapsack("Knapsack4.txt"),
-                //new Knapsack("Knapsack5.txt"),
-                //new Knapsack("Knapsack6.txt")
+                new Knapsack("Knapsack3.txt"),
+                new Knapsack("Knapsack4.txt"),
+                new Knapsack("Knapsack5.txt"),
+                new Knapsack("Knapsack6.txt")
             };
 
             var maxEFOS = 5000;
@@ -56,7 +58,7 @@ namespace OptimizacionBinaria
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
                 new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
                 new DE(){MaxEFOs = maxEFOS},
-                new DECC_I(){MaxEFOs = maxEFOS, cycles = 2, FEs = 20, s = 4}
+                new DECC_I(){MaxEFOs = maxEFOS, cycles = 2, FEs = 50, s = 4}
 
             };
 
@@ -68,7 +70,7 @@ namespace OptimizacionBinaria
             var parList = new List<double>(){0.25};//; { 0.2, 0.25, 0.3, 0.35, 0.4}; //5
 
 
-            Console.WriteLine("             Búsqueda Aleatoria        Algoritmo Genético        GBHS                      DE                    DECC_I");
+            Console.WriteLine("             Búsqueda Aleatoria        Algoritmo Genético        GBHS                      DE                        DECC_I");
             foreach (var Problem in myProblems)
             {
                 Console.Write("Problema " + count+ ":  ");                
