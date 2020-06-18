@@ -45,8 +45,12 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     if(_index[0] == _index[1]){break;}                
                                         
                     de.Ejecutar(myRandom, best_s, Population, _index[0],_index[1]);
-                } 
-                //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                
+                    if (condicion_parada(Population[0]))
+                    {
+                        BestSolution = best_s; 
+                        return;
+                    }
+                }                 
 
                 //Se optiene la peor solución, la mejor y una solución aleatoria            
                 best_s = new Solution(Population[0]);
@@ -63,28 +67,45 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     rand_s1,
                     worst_s
                 };  
-                de.MaxEFOs=2;              
+                //Opción 1
+                //de.MaxEFOs=2;              
                 de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);                   
                 best_s = de.BestSolution;                        
                 
+
+                //Opción 2
                 /*
                 var Copy_P = Population;
                 
                 //Console.WriteLine("Iteration-cicle"+i);
                 de.Ejecutar(myRandom, best_s, Copy_P, 0,theProblem.TotalItems-1);                                  
-                Population[0] = new Solution(de.BestSolution);                                
+                Population[0] = new Solution(de.BestSolution);     
+                if (condicion_parada(Population[0])){break;}
 
                 de.Ejecutar(myRandom, rand_s, Copy_P = Population, 0,theProblem.TotalItems-1);  
-                Population[index_rand] = new Solution(de.BestSolution);                                     
+                Population[index_rand] = new Solution(de.BestSolution); 
+                if (condicion_parada(Population[index_rand])){break;}                                    
 
                 de.Ejecutar(myRandom, worst_s, Copy_P = Population, 0,theProblem.TotalItems-1);
                 Population[PopulationSize-1] = new Solution(de.BestSolution);                                  
+                if (condicion_parada(Population[PopulationSize-1])){break;}                                    
                 
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
-                best_s = Population[0];*/
+                best_s = Population[0];
+                */
             }    
             Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));        
             BestSolution = best_s; 
+        }
+
+        public bool condicion_parada(Solution S)
+        {
+            bool varResultado = false;
+            if (EFOs >= MaxEFOs || S.IsOptimalKnown())
+            {
+                varResultado = true;
+            }            
+            return varResultado;
         }
 
         public int[] obtener_indices(int TotalItems,int j)
