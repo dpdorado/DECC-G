@@ -21,7 +21,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
             var Best = Population[0];
                         
-            while (EFOs <= MaxEFOs && Population[0].IsOptimalKnown()){
+            do{
                 
                 if(Q.Count != 0)
                 {
@@ -39,6 +39,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                                         
                     }
                 }
+                //Console.WriteLine("Best.Fitness:"+Best.Fitness);
 
                 Q = Population;
                 
@@ -73,12 +74,11 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
 
                     if (EFOs >= MaxEFOs) break;
                     if (Population[j].IsOptimalKnown()) break;
-                }                
-
-                Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
-            }
-            
+                }                                
                 
+            } while (EFOs <= MaxEFOs && Population[0].IsOptimalKnown()); 
+            Population[Population.Count-1]=Best;                   
+            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
             BestSolution = Population[0];
         } 
 
@@ -91,8 +91,8 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                        
             var Best = new Solution(Best_Solution);
               
-            while (EFOs <= MaxEFOs )
-            {  
+            
+            do{  
                 if(Q.Count != 0)
                 {
                     for(var i = 0; i < Population.Count; i++)
@@ -144,9 +144,10 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     if (EFOs >= MaxEFOs) break;                    
                 }                
 
-                Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
-            }
-              
+               
+            }while (EFOs <= MaxEFOs );
+            Population[Population.Count-1]=Best; 
+            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
             BestSolution = new Solution(Population[0]);
         }
 
