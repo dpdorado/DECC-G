@@ -35,14 +35,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             var best_s = new Solution(Population[0]);
           
                                                                                  
-            for (var i = 1; i < this.cycles; i++)
+            for (var i = 1; i <= this.cycles; i++)
             {      
                 de.MaxEFOs = FEs;        
-                for (var j = 1; j < theProblem.TotalItems/this.s; j++)
+                for (var j = 1; j <= theProblem.TotalItems/this.s; j++)
                 {    
                     int[] _index = obtener_indices(theProblem.TotalItems,j);
 
                     if(_index[0] == _index[1]){break;}
+
+                    //Console.WriteLine(":"+Population.Count);
+                    //Console.WriteLine(":"+_index[0]+" :"+_index[1]);
                                         
                     de.Ejecutar(myRandom, best_s, Population, _index[0],_index[1]);
                 }    
