@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OptimizacionBinaria.Exactos;
@@ -33,10 +34,10 @@ namespace OptimizacionBinaria
                 new Knapsack("f10.txt"),
                 new Knapsack("Knapsack1.txt"),
                 new Knapsack("Knapsack2.txt"),
-                new Knapsack("Knapsack3.txt"),
-                new Knapsack("Knapsack4.txt"),
-                new Knapsack("Knapsack5.txt"),
-                new Knapsack("Knapsack6.txt")
+                new Knapsack("Knapsack3.txt")
+                //new Knapsack("Knapsack4.txt"),
+                //new Knapsack("Knapsack5.txt"),
+                //new Knapsack("Knapsack6.txt")
             };
 
             var maxEFOS = 5000;
@@ -63,6 +64,14 @@ namespace OptimizacionBinaria
             };
 
             const int maxRep = 30;
+            var gestorR = new GestionResultados();
+            var pathResultados = gestorR.copiarPlantilla();
+            var limite_= myAlgorithms.Count*3;
+            var fi = 68;
+            var ci = 6;
+            var confila = 0;
+            var conColumna = 0;
+            //68,79 ----6,21            
             var count = 1;
 
             var hmsList = new List<int>(){5};//{5, 10, 15, 20}; //4
@@ -79,8 +88,8 @@ namespace OptimizacionBinaria
                     var mediaF = 0.0;
                     var conExito = 0;
                     var tasaExito = 0.0;                    
-                    //var DE = 0.0;
-                    //ArrayList mejSoluciones = new ArrayList();
+                    var DE = 0.0;
+                    ArrayList mejSoluciones = new ArrayList();
                     for (var rep = 0; rep < maxRep; rep++)
                     {
                         var seed = Environment.TickCount;
@@ -89,7 +98,7 @@ namespace OptimizacionBinaria
 
                         Algorithm.Ejecutar(Problem, aleatorio);
                         mediaF += Algorithm.BestSolution.Fitness;
-                        //mejSoluciones.Add(Algorithm.MejorSolucion.fitness);
+                        mejSoluciones.Add(Algorithm.BestSolution.Fitness);
                         if (Algorithm.BestSolution.IsOptimalKnown())
                         {
                             conExito++;
@@ -98,18 +107,30 @@ namespace OptimizacionBinaria
                     // Media
                     mediaF = mediaF / maxRep;
                     //Tasa de éxito
-                    tasaExito = conExito /maxRep * 100;
+                    tasaExito = (Double)conExito /(Double)maxRep * 100;
                     //Desviación estandar
-                    //DE = calcularDE(mejSoluciones, mediaF);
+                    DE = calcularDE(mejSoluciones, mediaF);
                     //agregar a un archivo los datos
 
+                    if (confila == limite_){confila=0;}                                    
+
+                    var celda = convertirCelda(fi,confila,ci,conColumna);                                     
+                    gestorR.editarCelda(celda, mediaF, pathResultados);
+                    confila++;                    
+                    celda = convertirCelda(fi,confila,ci,conColumna);                                        
+                    gestorR.editarCelda(celda, DE, pathResultados);
+                    confila++;                    
+                    celda = convertirCelda(fi,confila,ci,conColumna);                                        
+                    gestorR.editarCelda(celda, tasaExito, pathResultados);
+                    confila++; 
                                                         
 
                     //Console.Write($"{mediaF,-25:0.0000}" + " | "+$"{DE,-25:0.0000}" +" | "+$"{tasaExito,-25:0.0000}");
                     Console.Write($"{mediaF,-25:0.000000000000000}" + " ");                    
                 }
                 Console.WriteLine();
-                count++;                
+                count++;
+                conColumna++;               
             }                             
 
             /*
@@ -170,6 +191,26 @@ namespace OptimizacionBinaria
             }*/
 
             Console.ReadKey();
+        }
+
+        public static string convertirCelda(int fi, int confila, int ci, int conColumna)
+        {
+            var columan = ((char)(fi+confila)).ToString();
+            var fila = (ci+conColumna).ToString();
+            return columan+fila;
+        }        
+
+        public static double calcularDE(ArrayList mSoluciones, double M)
+        {
+            var suma = 0.0;
+            var N = mSoluciones.Count;
+
+            foreach(object Xi in mSoluciones)
+            {
+                var aux = (double)Xi - M;
+                suma += Math.Pow(aux, 2);
+            }            
+            return  Math.Sqrt(suma/N);
         }
     }
 }

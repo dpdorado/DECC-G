@@ -64,8 +64,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     rand_s1,
                     worst_s
                 };                
-                de.Ejecutar(myRandom, best_s, new_population,0,new_population.Count);      
-                //____________________________________problema principal          
+                de.Ejecutar(myRandom, best_s, new_population,0,new_population.Count);                
                 Population[PopulationSize-1] = de.BestSolution; 
 
                 /*de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
