@@ -26,7 +26,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         { 
             //var timeBegin = DateTime.Now;
             EFOs = 0;
-            DE de = new DE(){MaxEFOs = FEs, k = 0.01};//variar
+            DE de = new DE(){MaxEFOs = FEs, k = 2};//variar
             s = theProblem.TotalItems / 3;
 
                 
@@ -36,23 +36,25 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
           
                                                                                  
             for (var i = 1; i < this.cycles; i++)
-            {              
+            {      
+                de.MaxEFOs = FEs;        
                 for (var j = 1; j < theProblem.TotalItems/this.s; j++)
-                {                    
-                    var l = ((j - 1) * s + 1) -1;//+1-1=0se puede eliminar
-                    var u = (j * s) - 1;              
+                {    
+                    int[] _index = obtener_indices(theProblem.TotalItems,j);
+
+                    if(_index[0] == _index[1]){break;}
                                         
-                    de.Ejecutar(myRandom, best_s, Population, l,u);                                                                             
+                    de.Ejecutar(myRandom, best_s, Population, _index[0],_index[1]);
                 }    
                 
-                for (var j = 0; j <= PopulationSize; j++)
+                /*for (var j = 0; j <= PopulationSize; j++)
                 {
                     Population[i].Evaluate();
-                }                
-                Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
+                } */               
+                //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
 
                 //Se optiene la peor solución, la mejor y una solución aleatoria            
-                best_s = Population[0];
+                best_s = new Solution(Population[0]);
                 var index_rand =index(1,PopulationSize-1);
                 Solution rand_s = Population[index_rand];
                 Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
@@ -63,11 +65,13 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     rand_s,
                     rand_s1,
                     worst_s
-                };                
+                };  
+                de.MaxEFOs=3;              
                 de.Ejecutar(myRandom, best_s, new_population,0,new_population.Count);                
                 Population[PopulationSize-1] = de.BestSolution; 
-
-                /*de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
+                
+                /*
+                de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
                 Population[0] = new Solution(de.BestSolution);
                 de.Ejecutar(myRandom, rand_s, Population, 0,theProblem.TotalItems-1);  
                 Population[index_rand] = new Solution(de.BestSolution);
@@ -86,6 +90,30 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));//Error al ordenar
             BestSolution = Population[0];                        
         }
+
+        public int[] obtener_indices(int TotalItems,int j)
+        {
+            int[] indexs = new int[2];
+            indexs[0] = (j - 1) * s ;
+            indexs[1] = (j * s) - 1;        
+            
+            //Mejorar indices      
+
+            if((TotalItems-1) - indexs[1] < s)
+            {
+                indexs[1] = TotalItems-1;
+            }
+
+            if( s >= TotalItems)
+            {
+                indexs[0] = 0;
+                indexs[1] = TotalItems -1;
+            }
+            return indexs;
+
+        }                
+                    
+
 
         //Reparar soluciones
         public void reparar_soluciones(Random myRandom, List<Solution> Population, int s, int group)

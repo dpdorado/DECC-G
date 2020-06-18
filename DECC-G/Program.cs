@@ -34,10 +34,10 @@ namespace OptimizacionBinaria
                 new Knapsack("f10.txt"),
                 new Knapsack("Knapsack1.txt"),
                 new Knapsack("Knapsack2.txt"),
-                new Knapsack("Knapsack3.txt")
-                //new Knapsack("Knapsack4.txt"),
-                //new Knapsack("Knapsack5.txt"),
-                //new Knapsack("Knapsack6.txt")
+                new Knapsack("Knapsack3.txt"),
+                new Knapsack("Knapsack4.txt"),
+                new Knapsack("Knapsack5.txt"),
+                new Knapsack("Knapsack6.txt")
             };
 
             var maxEFOS = 5000;
@@ -58,8 +58,8 @@ namespace OptimizacionBinaria
                 new RandomSearch() {MaxEFOs = maxEFOS},
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
                 new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
-                new DE(){MaxEFOs = maxEFOS},
-                new DECC_I(){MaxEFOs = maxEFOS, cycles = 2, FEs = 50, s = 4}
+                new DE(){MaxEFOs = maxEFOS, k = 2},
+                new DECC_I(){MaxEFOs = maxEFOS, cycles = 4, FEs = 50, s = 4}
 
             };
 
