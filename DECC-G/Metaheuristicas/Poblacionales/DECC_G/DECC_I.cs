@@ -42,23 +42,17 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 {    
                     int[] _index = obtener_indices(theProblem.TotalItems,j);
 
-                    if(_index[0] == _index[1]){break;}
-
-                    //Console.WriteLine(":"+Population.Count);
-                    //Console.WriteLine(":"+_index[0]+" :"+_index[1]);
+                    if(_index[0] == _index[1]){break;}                
                                         
                     de.Ejecutar(myRandom, best_s, Population, _index[0],_index[1]);
-                }    
-                
-                /*for (var j = 0; j <= PopulationSize; j++)
-                {
-                    Population[i].Evaluate();
-                } */               
-                //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));
+                } 
+                //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                
 
                 //Se optiene la peor solución, la mejor y una solución aleatoria            
                 best_s = new Solution(Population[0]);
+                
                 var index_rand =index(1,PopulationSize-1);
+
                 Solution rand_s = Population[index_rand];
                 Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
                 Solution worst_s = Population[PopulationSize-1];
@@ -69,29 +63,28 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                     rand_s1,
                     worst_s
                 };  
-                de.MaxEFOs=3;              
-                de.Ejecutar(myRandom, best_s, new_population,0,new_population.Count);                
-                Population[PopulationSize-1] = de.BestSolution; 
+                de.MaxEFOs=2;              
+                de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);                   
+                best_s = de.BestSolution;                        
                 
                 /*
-                de.Ejecutar(myRandom, best_s, Population, 0,theProblem.TotalItems-1);  
-                Population[0] = new Solution(de.BestSolution);
-                de.Ejecutar(myRandom, rand_s, Population, 0,theProblem.TotalItems-1);  
-                Population[index_rand] = new Solution(de.BestSolution);
-                de.Ejecutar(myRandom, worst_s, Population, 0,theProblem.TotalItems-1);  
-                Population[PopulationSize] = new Solution(de.BestSolution); 
+                var Copy_P = Population;
+                
+                //Console.WriteLine("Iteration-cicle"+i);
+                de.Ejecutar(myRandom, best_s, Copy_P, 0,theProblem.TotalItems-1);                                  
+                Population[0] = new Solution(de.BestSolution);                                
 
-                for (var j = 0; j <= PopulationSize; j++)
-                {
-                    Population[i].Evaluate();
-                }
+                de.Ejecutar(myRandom, rand_s, Copy_P = Population, 0,theProblem.TotalItems-1);  
+                Population[index_rand] = new Solution(de.BestSolution);                                     
 
+                de.Ejecutar(myRandom, worst_s, Copy_P = Population, 0,theProblem.TotalItems-1);
+                Population[PopulationSize-1] = new Solution(de.BestSolution);                                  
+                
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
                 best_s = Population[0];*/
-            }
-            //Aqui el problema-----------------------------------------por ->
-            //Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));//Error al ordenar
-            BestSolution = Population[0];                        
+            }    
+            Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));        
+            BestSolution = best_s; 
         }
 
         public int[] obtener_indices(int TotalItems,int j)

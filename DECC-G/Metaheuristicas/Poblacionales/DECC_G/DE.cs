@@ -82,14 +82,14 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
             BestSolution = Population[0];
         } 
 
-        public void Ejecutar(Random myRandom, Solution BestSolution, List<Solution> Population, int index_i,int index_s)
+        public void Ejecutar(Random myRandom, Solution Best_Solution, List<Solution> Population, int index_i,int index_s)
         {            
             EFOs = 0;                  
            
             //var Population = subpob;
             var Q = new List<Solution>();            
                        
-            var Best = new Solution(BestSolution);
+            var Best = new Solution(Best_Solution);
               
             while (EFOs <= MaxEFOs )
             {  

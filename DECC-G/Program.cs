@@ -59,7 +59,7 @@ namespace OptimizacionBinaria
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
                 new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
                 new DE(){MaxEFOs = maxEFOS, k = 2},
-                new DECC_I(){MaxEFOs = maxEFOS, cycles = 3, FEs = 50, s = 4}
+                new DECC_I(){MaxEFOs = maxEFOS, cycles =30, FEs = 50, s = 4}
 
             };
 
