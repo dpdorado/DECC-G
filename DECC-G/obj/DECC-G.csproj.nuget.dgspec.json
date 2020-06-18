@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\metaheuristicas\\DECC-G\\DECC-G\\DECC-G.csproj": {}
+    "C:\\Users\\Rene\\Desktop\\DECC-G\\DECC-G\\DECC-G.csproj": {}
   },
   "projects": {
-    "D:\\metaheuristicas\\DECC-G\\DECC-G\\DECC-G.csproj": {
+    "C:\\Users\\Rene\\Desktop\\DECC-G\\DECC-G\\DECC-G.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\metaheuristicas\\DECC-G\\DECC-G\\DECC-G.csproj",
+        "projectUniqueName": "C:\\Users\\Rene\\Desktop\\DECC-G\\DECC-G\\DECC-G.csproj",
         "projectName": "DECC-G",
-        "projectPath": "D:\\metaheuristicas\\DECC-G\\DECC-G\\DECC-G.csproj",
+        "projectPath": "C:\\Users\\Rene\\Desktop\\DECC-G\\DECC-G\\DECC-G.csproj",
         "packagesPath": "C:\\Users\\Rene\\.nuget\\packages\\",
-        "outputPath": "D:\\metaheuristicas\\DECC-G\\DECC-G\\obj\\",
+        "outputPath": "C:\\Users\\Rene\\Desktop\\DECC-G\\DECC-G\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Rene\\AppData\\Roaming\\NuGet\\NuGet.Config",
