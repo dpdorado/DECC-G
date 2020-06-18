@@ -20,14 +20,18 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
         //Número de ciclos
         
         public int FEs = 2;//cambiar valor por defecto
-        //Peso del componente FEs                  
+        //Peso del componente FEs       
+
+        public int k=2;   
+
+        public int groups = 3;        
 
         public override void Ejecutar(Knapsack theProblem, Random myRandom)
         { 
             //var timeBegin = DateTime.Now;
             EFOs = 0;
-            DE de = new DE(){MaxEFOs = FEs, k = 2};//variar
-            s = theProblem.TotalItems / 3;
+            DE de = new DE(){MaxEFOs = FEs, k = this.k};//variar
+            s = theProblem.TotalItems / groups;
 
                 
             var Population = inicializar_poblacion(theProblem,myRandom);
@@ -50,31 +54,31 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                         BestSolution = best_s; 
                         return;
                     }
-                }                 
-
-                //Se optiene la peor solución, la mejor y una solución aleatoria            
-                best_s = new Solution(Population[0]);
-                
+                }                                
+                //Se obtiene la peor solución, la mejor y una soución aleatoria            
                 var index_rand =index(1,PopulationSize-1);
-
-                Solution rand_s = Population[index_rand];
-                Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
+                
+                best_s = new Solution(Population[0]);                            
+                Solution rand_s = Population[index_rand];                
                 Solution worst_s = Population[PopulationSize-1];
-                               
-                List<Solution> new_population = new List<Solution>
+
+                //Opción 1               
+                //Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
+                /*List<Solution> new_population = new List<Solution>
                 {
                     rand_s,
                     rand_s1,
                     worst_s
                 };  
-                //Opción 1
-                //de.MaxEFOs=2;              
-                de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);                   
-                best_s = de.BestSolution;                        
                 
+                //de.MaxEFOs=2;              
+                //de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);                   
+                //best_s = de.BestSolution;                        
+                */
+
 
                 //Opción 2
-                /*
+                
                 var Copy_P = Population;
                 
                 //Console.WriteLine("Iteration-cicle"+i);
@@ -92,7 +96,7 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 
                 Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));                                
                 best_s = Population[0];
-                */
+                
             }    
             Population.Sort((x,y) => -1 * x.Fitness.CompareTo(y.Fitness));        
             BestSolution = best_s; 

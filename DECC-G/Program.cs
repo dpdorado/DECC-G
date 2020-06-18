@@ -59,7 +59,7 @@ namespace OptimizacionBinaria
                 new Genetico1() {MaxEFOs = maxEFOS, PopulationSize = 10},
                 new GBHS() {MaxEFOs = maxEFOS, HarmonyMemorySize = 10},
                 new DE(){MaxEFOs = maxEFOS, k = 2},
-                new DECC_I(){MaxEFOs = maxEFOS, cycles =100, FEs = 50, s = 4}
+                new DECC_I(){MaxEFOs = maxEFOS, cycles = 20, FEs = 100,groups = 4, k = 2}
 
             };
 
@@ -131,64 +131,7 @@ namespace OptimizacionBinaria
                 Console.WriteLine();
                 count++;
                 conColumna++;               
-            }                             
-
-            /*
-            foreach (var hms in hmsList)
-            {
-                foreach (var hmcr in hmcrList)
-                {
-                    foreach (var par in parList)
-                    {
-                        foreach (var theAlgorithm in myAlgorithms)
-                        {
-                            ((GBHS) theAlgorithm).HarmonyMemorySize = hms;
-                            ((GBHS) theAlgorithm).Hmcr = hmcr;
-                            ((GBHS)theAlgorithm).Par = par;
-
-                            Console.Write($"{theAlgorithm} ");
-                            //Console.Write($"{"Problem", -15} {"Items", 6} {"Ideal", 10} ");
-                            //Console.WriteLine($"{"Avg-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "Time",15}");
-
-                            var success = 0.0;
-
-                            foreach (var theProblem in myProblems)
-                            {
-                                //Console.Write($"{theProblem.FileName,-15} {theProblem.TotalItems,6} {theProblem.OptimalKnown,10} ");
-
-                                var efos = new List<int>();
-                                var mediaF = new List<double>();
-                                var times = new List<double>();
-                                var succesRate = 0;
-                                for (var rep = 0; rep < maxRep; rep++)
-                                {
-                                    var myRandom = new Random(rep);
-                                    var timeBegin = DateTime.Now;
-                                    theAlgorithm.Ejecutar(theProblem, myRandom);
-                                    times.Add((DateTime.Now - timeBegin).TotalSeconds);
-                                    mediaF.Add(theAlgorithm.BestSolution.Fitness);
-                                    efos.Add(theAlgorithm.EFOs);
-                                    if (Math.Abs(theAlgorithm.BestSolution.Fitness - theProblem.OptimalKnown) < 1e-10)
-                                        succesRate++;
-                                }
-
-                                success += succesRate * 100.0 / maxRep;
-
-                                //var avg = mediaF.Average();
-                                //Console.Write($"{avg,15:0.000} ");
-                                //var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
-                                //deviation = Math.Sqrt(deviation / maxRep);
-                                //Console.Write($"{deviation,15:0.000} ");
-                                //Console.Write($"{efos.Average(),15:0.000} ");
-                                //Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
-                                //Console.WriteLine($"{times.Average(),15:0.000000} ");
-                            }
-
-                            Console.WriteLine($"Existo Promedio = {success / myProblems.Count}% ");
-                        }
-                    }
-                }
-            }*/
+            }                                         
 
             Console.ReadKey();
         }
