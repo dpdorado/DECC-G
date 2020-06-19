@@ -18,8 +18,7 @@ namespace OptimizacionBinaria
     {
         
         static void Main(string[] args)
-        {
-            Console.WriteLine("Hola");
+        {            
             var myProblems = new List<Knapsack>
             {
                 new Knapsack("f1.txt"),

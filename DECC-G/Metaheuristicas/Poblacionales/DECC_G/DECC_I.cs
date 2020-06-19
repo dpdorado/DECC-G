@@ -61,27 +61,10 @@ namespace OptimizacionBinaria.Metaheuristicas.Poblacionales.DECC_G
                 best_s = new Solution(Population[0]);                            
                 Solution rand_s = Population[index_rand];                
                 Solution worst_s = Population[PopulationSize-1];
-
-                //Opción 1               
-                //Solution rand_s1 = Population[index(1,PopulationSize-1)];//--               
-                /*List<Solution> new_population = new List<Solution>
-                {
-                    rand_s,
-                    rand_s1,
-                    worst_s
-                };  
                 
-                //de.MaxEFOs=2;              
-                //de.Ejecutar(myRandom, best_s, new_population,0,theProblem.TotalItems-1);                   
-                //best_s = de.BestSolution;                        
-                */
-
-
-                //Opción 2
                 
                 var Copy_P = Population;
-                
-                //Console.WriteLine("Iteration-cicle"+i);
+                                
                 de.Ejecutar(myRandom, best_s, Copy_P, 0,theProblem.TotalItems-1);                                  
                 Population[0] = new Solution(de.BestSolution);     
                 if (condicion_parada(Population[0])){break;}
